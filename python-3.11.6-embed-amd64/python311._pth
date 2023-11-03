@@ -1,0 +1,5 @@
+python311.zip
+%PYTHONPATH%
+
+# Uncomment to run site.main() automatically
+import site

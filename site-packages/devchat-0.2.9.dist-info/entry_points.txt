@@ -1,0 +1,3 @@
+[console_scripts]
+devchat=devchat._cli.main:main
+
