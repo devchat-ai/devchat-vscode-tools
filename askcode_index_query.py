@@ -14,6 +14,7 @@ def query(question, lsp_brige_port):
 
     # Print the answer
     print(answer[0])
+    print(f"\n\n/***ask-code has costed approximately ${int(float(answer[2]['token_usage']['total_cost'])/0.7*10000)/10000} USD for this question.***")
 
 
 def main():
