@@ -20,17 +20,9 @@ import re
 import json
 import subprocess
 
-# python with installed devchat
-devchat_python_execute = ""
-
 
 def output_message(output):
-    out_obj = {"content": output}
-    out_data = f"""
-<<Start>>
-{json.dumps(out_obj)}
-<<End>>
-    """
+    out_data = f"""\n<<Start>>\n{output}\n<<End>>\n"""
     print(out_data)
 
 def pipe_interaction(output: str):
@@ -77,11 +69,13 @@ def call_gpt(input: str) -> str:
         str: The output string from GPT.
     """
     new_prompt = input
-    global devchat_python_execute
     
     # call devchat chat {new_prompt}
     # devchat is a command line tool that calls GPT through the OpenAI API
-    result = subprocess.run([devchat_python_execute, "-m", "devchat", 'prompt', new_prompt], capture_output=True, text=True)
+	# set PYTHONPATH to environment variable PYTHONLIBPATH
+    pythonLibPath = os.environ.get("PYTHONLIBPATH")
+    pythonBinPath = os.environ.get("DEVCHATPYTHON")
+    result = subprocess.run([pythonBinPath, "-m", "devchat", "-m", "gpt-3.5-turbo-16k", 'prompt', new_prompt], capture_output=True, text=True, env={"PYTHONPATH": pythonLibPath})
 
     if result.returncode != 0:
         print(result.stderr)
@@ -114,9 +108,6 @@ def get_modified_files():
  
 def get_file_summary(modified_files, staged_files):
     """ 当modified_files文件列表<=5时，根据项目修改差异生成每一个文件的修改总结 """
-    if len(modified_files) > 10: 
-        return None
-
     diffs = []
     for file in modified_files:
         if file not in staged_files:
@@ -127,6 +118,9 @@ def get_file_summary(modified_files, staged_files):
         diffs.append(diff.decode('utf-8'))
     # total_diff = subprocess.check_output(["git", "diff", "HEAD"])
     total_diff_decoded = '\n'.join(diffs) #  total_diff.decode('utf-8')
+    
+    if len(total_diff_decoded) > 15000:
+        return {}
 
     # 在prompt中明确处置AI模型的输出格式需求
     prompt = f""" 
@@ -219,8 +213,7 @@ def display_commit_message_and_commit(commit_message):
 
 
 if __name__ == '__main__':
-    devchat_python_execute = sys.argv[1]
-    user_input = sys.argv[2]
+    user_input = sys.argv[1]
 
     modified_files, staged_files = get_modified_files()
     file_summaries = get_file_summary(modified_files, staged_files)
