@@ -6,7 +6,6 @@
 digraphs on three nodes.
 
 """
-import networkx as nx
 from networkx.classes import DiGraph
 
 __all__ = ["triad_graph"]
@@ -33,7 +32,6 @@ TRIAD_EDGES = {
 }
 
 
-@nx._dispatch(graphs=None)
 def triad_graph(triad_name):
     """Returns the triad graph with the given name.
 

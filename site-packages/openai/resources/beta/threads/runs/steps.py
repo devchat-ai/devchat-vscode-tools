@@ -2,31 +2,34 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 from typing_extensions import Literal
 
 import httpx
 
+from ..... import _legacy_response
 from ....._types import NOT_GIVEN, Body, Query, Headers, NotGiven
 from ....._utils import maybe_transform
+from ....._compat import cached_property
 from ....._resource import SyncAPIResource, AsyncAPIResource
-from ....._response import to_raw_response_wrapper, async_to_raw_response_wrapper
+from ....._response import to_streamed_response_wrapper, async_to_streamed_response_wrapper
 from .....pagination import SyncCursorPage, AsyncCursorPage
-from ....._base_client import AsyncPaginator, make_request_options
+from ....._base_client import (
+    AsyncPaginator,
+    make_request_options,
+)
 from .....types.beta.threads.runs import RunStep, step_list_params
-
-if TYPE_CHECKING:
-    from ....._client import OpenAI, AsyncOpenAI
 
 __all__ = ["Steps", "AsyncSteps"]
 
 
 class Steps(SyncAPIResource):
-    with_raw_response: StepsWithRawResponse
+    @cached_property
+    def with_raw_response(self) -> StepsWithRawResponse:
+        return StepsWithRawResponse(self)
 
-    def __init__(self, client: OpenAI) -> None:
-        super().__init__(client)
-        self.with_raw_response = StepsWithRawResponse(self)
+    @cached_property
+    def with_streaming_response(self) -> StepsWithStreamingResponse:
+        return StepsWithStreamingResponse(self)
 
     def retrieve(
         self,
@@ -53,6 +56,12 @@ class Steps(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
+        if not thread_id:
+            raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
+        if not run_id:
+            raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
+        if not step_id:
+            raise ValueError(f"Expected a non-empty value for `step_id` but received {step_id!r}")
         extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
         return self._get(
             f"/threads/{thread_id}/runs/{run_id}/steps/{step_id}",
@@ -106,6 +115,10 @@ class Steps(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
+        if not thread_id:
+            raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
+        if not run_id:
+            raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
         extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
         return self._get_api_list(
             f"/threads/{thread_id}/runs/{run_id}/steps",
@@ -130,11 +143,13 @@ class Steps(SyncAPIResource):
 
 
 class AsyncSteps(AsyncAPIResource):
-    with_raw_response: AsyncStepsWithRawResponse
+    @cached_property
+    def with_raw_response(self) -> AsyncStepsWithRawResponse:
+        return AsyncStepsWithRawResponse(self)
 
-    def __init__(self, client: AsyncOpenAI) -> None:
-        super().__init__(client)
-        self.with_raw_response = AsyncStepsWithRawResponse(self)
+    @cached_property
+    def with_streaming_response(self) -> AsyncStepsWithStreamingResponse:
+        return AsyncStepsWithStreamingResponse(self)
 
     async def retrieve(
         self,
@@ -161,6 +176,12 @@ class AsyncSteps(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
+        if not thread_id:
+            raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
+        if not run_id:
+            raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
+        if not step_id:
+            raise ValueError(f"Expected a non-empty value for `step_id` but received {step_id!r}")
         extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
         return await self._get(
             f"/threads/{thread_id}/runs/{run_id}/steps/{step_id}",
@@ -214,6 +235,10 @@ class AsyncSteps(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
+        if not thread_id:
+            raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
+        if not run_id:
+            raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
         extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
         return self._get_api_list(
             f"/threads/{thread_id}/runs/{run_id}/steps",
@@ -239,19 +264,47 @@ class AsyncSteps(AsyncAPIResource):
 
 class StepsWithRawResponse:
     def __init__(self, steps: Steps) -> None:
-        self.retrieve = to_raw_response_wrapper(
+        self._steps = steps
+
+        self.retrieve = _legacy_response.to_raw_response_wrapper(
             steps.retrieve,
         )
-        self.list = to_raw_response_wrapper(
+        self.list = _legacy_response.to_raw_response_wrapper(
             steps.list,
         )
 
 
 class AsyncStepsWithRawResponse:
     def __init__(self, steps: AsyncSteps) -> None:
-        self.retrieve = async_to_raw_response_wrapper(
+        self._steps = steps
+
+        self.retrieve = _legacy_response.async_to_raw_response_wrapper(
             steps.retrieve,
         )
-        self.list = async_to_raw_response_wrapper(
+        self.list = _legacy_response.async_to_raw_response_wrapper(
+            steps.list,
+        )
+
+
+class StepsWithStreamingResponse:
+    def __init__(self, steps: Steps) -> None:
+        self._steps = steps
+
+        self.retrieve = to_streamed_response_wrapper(
+            steps.retrieve,
+        )
+        self.list = to_streamed_response_wrapper(
+            steps.list,
+        )
+
+
+class AsyncStepsWithStreamingResponse:
+    def __init__(self, steps: AsyncSteps) -> None:
+        self._steps = steps
+
+        self.retrieve = async_to_streamed_response_wrapper(
+            steps.retrieve,
+        )
+        self.list = async_to_streamed_response_wrapper(
             steps.list,
         )

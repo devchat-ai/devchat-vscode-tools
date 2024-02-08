@@ -80,7 +80,6 @@ def cytoscape_data(G, name="name", ident="id"):
     return jsondata
 
 
-@nx._dispatch(graphs=None)
 def cytoscape_graph(data, name="name", ident="id"):
     """
     Create a NetworkX graph from a dictionary in cytoscape JSON format.

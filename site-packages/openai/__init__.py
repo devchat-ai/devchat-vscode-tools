@@ -8,18 +8,10 @@ from typing_extensions import override
 from . import types
 from ._types import NoneType, Transport, ProxiesTypes
 from ._utils import file_from_path
-from ._client import (
-    Client,
-    OpenAI,
-    Stream,
-    Timeout,
-    Transport,
-    AsyncClient,
-    AsyncOpenAI,
-    AsyncStream,
-    RequestOptions,
-)
+from ._client import Client, OpenAI, Stream, Timeout, Transport, AsyncClient, AsyncOpenAI, AsyncStream, RequestOptions
+from ._models import BaseModel
 from ._version import __title__, __version__
+from ._response import APIResponse as APIResponse, AsyncAPIResponse as AsyncAPIResponse
 from ._exceptions import (
     APIError,
     OpenAIError,
@@ -68,12 +60,12 @@ __all__ = [
     "OpenAI",
     "AsyncOpenAI",
     "file_from_path",
+    "BaseModel",
 ]
 
 from .lib import azure as _azure
 from .version import VERSION as VERSION
-from .lib.azure import AzureOpenAI as AzureOpenAI
-from .lib.azure import AsyncAzureOpenAI as AsyncAzureOpenAI
+from .lib.azure import AzureOpenAI as AzureOpenAI, AsyncAzureOpenAI as AsyncAzureOpenAI
 from .lib._old_api import *
 
 _setup_logging()
@@ -86,7 +78,7 @@ __locals = locals()
 for __name in __all__:
     if not __name.startswith("__"):
         try:
-            setattr(__locals[__name], "__module__", "openai")
+            __locals[__name].__module__ = "openai"
         except (TypeError, AttributeError):
             # Some of our exported symbols are builtins which we can't set attributes for.
             pass
@@ -221,13 +213,6 @@ class _ModuleClient(OpenAI):
 
         http_client = value
 
-    @override
-    def __del__(self) -> None:
-        try:
-            super().__del__()
-        except Exception:
-            pass
-
 
 class _AzureModuleClient(_ModuleClient, AzureOpenAI):  # type: ignore
     ...
@@ -330,15 +315,15 @@ def _reset_client() -> None:  # type: ignore[reportUnusedFunction]
     _client = None
 
 
-from ._module_client import beta as beta
-from ._module_client import chat as chat
-from ._module_client import audio as audio
-from ._module_client import edits as edits
-from ._module_client import files as files
-from ._module_client import images as images
-from ._module_client import models as models
-from ._module_client import embeddings as embeddings
-from ._module_client import fine_tunes as fine_tunes
-from ._module_client import completions as completions
-from ._module_client import fine_tuning as fine_tuning
-from ._module_client import moderations as moderations
+from ._module_client import (
+    beta as beta,
+    chat as chat,
+    audio as audio,
+    files as files,
+    images as images,
+    models as models,
+    embeddings as embeddings,
+    completions as completions,
+    fine_tuning as fine_tuning,
+    moderations as moderations,
+)

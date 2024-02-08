@@ -2,59 +2,113 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from .threads import (
     Threads,
     AsyncThreads,
     ThreadsWithRawResponse,
     AsyncThreadsWithRawResponse,
+    ThreadsWithStreamingResponse,
+    AsyncThreadsWithStreamingResponse,
 )
+from ..._compat import cached_property
 from .assistants import (
     Assistants,
     AsyncAssistants,
     AssistantsWithRawResponse,
     AsyncAssistantsWithRawResponse,
+    AssistantsWithStreamingResponse,
+    AsyncAssistantsWithStreamingResponse,
 )
 from ..._resource import SyncAPIResource, AsyncAPIResource
-
-if TYPE_CHECKING:
-    from ..._client import OpenAI, AsyncOpenAI
+from .threads.threads import Threads, AsyncThreads
+from .assistants.assistants import Assistants, AsyncAssistants
 
 __all__ = ["Beta", "AsyncBeta"]
 
 
 class Beta(SyncAPIResource):
-    assistants: Assistants
-    threads: Threads
-    with_raw_response: BetaWithRawResponse
+    @cached_property
+    def assistants(self) -> Assistants:
+        return Assistants(self._client)
 
-    def __init__(self, client: OpenAI) -> None:
-        super().__init__(client)
-        self.assistants = Assistants(client)
-        self.threads = Threads(client)
-        self.with_raw_response = BetaWithRawResponse(self)
+    @cached_property
+    def threads(self) -> Threads:
+        return Threads(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> BetaWithRawResponse:
+        return BetaWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> BetaWithStreamingResponse:
+        return BetaWithStreamingResponse(self)
 
 
 class AsyncBeta(AsyncAPIResource):
-    assistants: AsyncAssistants
-    threads: AsyncThreads
-    with_raw_response: AsyncBetaWithRawResponse
+    @cached_property
+    def assistants(self) -> AsyncAssistants:
+        return AsyncAssistants(self._client)
 
-    def __init__(self, client: AsyncOpenAI) -> None:
-        super().__init__(client)
-        self.assistants = AsyncAssistants(client)
-        self.threads = AsyncThreads(client)
-        self.with_raw_response = AsyncBetaWithRawResponse(self)
+    @cached_property
+    def threads(self) -> AsyncThreads:
+        return AsyncThreads(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncBetaWithRawResponse:
+        return AsyncBetaWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncBetaWithStreamingResponse:
+        return AsyncBetaWithStreamingResponse(self)
 
 
 class BetaWithRawResponse:
     def __init__(self, beta: Beta) -> None:
-        self.assistants = AssistantsWithRawResponse(beta.assistants)
-        self.threads = ThreadsWithRawResponse(beta.threads)
+        self._beta = beta
+
+    @cached_property
+    def assistants(self) -> AssistantsWithRawResponse:
+        return AssistantsWithRawResponse(self._beta.assistants)
+
+    @cached_property
+    def threads(self) -> ThreadsWithRawResponse:
+        return ThreadsWithRawResponse(self._beta.threads)
 
 
 class AsyncBetaWithRawResponse:
     def __init__(self, beta: AsyncBeta) -> None:
-        self.assistants = AsyncAssistantsWithRawResponse(beta.assistants)
-        self.threads = AsyncThreadsWithRawResponse(beta.threads)
+        self._beta = beta
+
+    @cached_property
+    def assistants(self) -> AsyncAssistantsWithRawResponse:
+        return AsyncAssistantsWithRawResponse(self._beta.assistants)
+
+    @cached_property
+    def threads(self) -> AsyncThreadsWithRawResponse:
+        return AsyncThreadsWithRawResponse(self._beta.threads)
+
+
+class BetaWithStreamingResponse:
+    def __init__(self, beta: Beta) -> None:
+        self._beta = beta
+
+    @cached_property
+    def assistants(self) -> AssistantsWithStreamingResponse:
+        return AssistantsWithStreamingResponse(self._beta.assistants)
+
+    @cached_property
+    def threads(self) -> ThreadsWithStreamingResponse:
+        return ThreadsWithStreamingResponse(self._beta.threads)
+
+
+class AsyncBetaWithStreamingResponse:
+    def __init__(self, beta: AsyncBeta) -> None:
+        self._beta = beta
+
+    @cached_property
+    def assistants(self) -> AsyncAssistantsWithStreamingResponse:
+        return AsyncAssistantsWithStreamingResponse(self._beta.assistants)
+
+    @cached_property
+    def threads(self) -> AsyncThreadsWithStreamingResponse:
+        return AsyncThreadsWithStreamingResponse(self._beta.threads)

@@ -1,5 +1,4 @@
 import bz2
-import importlib.resources
 import os
 import pickle
 
@@ -462,10 +461,7 @@ class TestMinCostFlow:
         # pytest.raises(nx.NetworkXUnfeasible, nx.capacity_scaling, G)
 
     def test_large(self):
-        fname = (
-            importlib.resources.files("networkx.algorithms.flow.tests")
-            / "netgen-2.gpickle.bz2"
-        )
+        fname = os.path.join(os.path.dirname(__file__), "netgen-2.gpickle.bz2")
         with bz2.BZ2File(fname, "rb") as f:
             G = pickle.load(f)
         flowCost, flowDict = nx.network_simplex(G)
