@@ -1,7 +1,10 @@
 name: Sync up devchat packages
 
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
+  push:
+    branches:
+      - ci
 
 jobs:
   sync:
