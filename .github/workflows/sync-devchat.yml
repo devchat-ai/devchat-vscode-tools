@@ -28,35 +28,34 @@ jobs:
         environment-name: devchat_no_binary
         create-args: >-
           python=3.8
-      # run: |
-      #   "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
-      #   source ~/.bashrc
-      #   eval "$(micromamba shell init --shell bash --root-prefix=~/micromamba 2> /dev/null)"
-      #   micromamba create -y -n devchat_no_binary python=3.8
-      #   micromamba activate devchat_no_binary
+      
+    - name: Checkout devchat repository to a temporary directory
+      uses: actions/checkout@v2
+      with:
+        repository: devchat-ai/devchat
+        path: ./temp-devchat
     
-    - name: Check python env
+    - name: Install devchat dependencies
       shell: micromamba-shell {0}
       run: |
-        which mamba
-        mamba --help
-        python --version
-        pip --version
-        which python
-        which pip
-  
-    # - name: Checkout devchat repository to a temporary directory
-    #   uses: actions/checkout@v2
-    #   with:
-    #     repository: devchat-ai/devchat
-    #     path: ./temp-devchat
-    
-    # - name: Run script
-    #   run: |
-    #     cd ./temp-devchat
-    #     pip list
-    #     pip install typer
-    #     pip list
+        echo ">>>>>>>>>> check current path"
+        pwd
+        ls
+        echo ">>>>>>>>>> Check site packages before install"
+        ls $SITE_PACKAGES
+        SITE_PACKAGES=$(python -c "import site; print(site.getsitepackages()[0])")
+        echo $SITE_PACKAGES
+        cd ./temp-devchat
+        pip list
+        echo ">>>> Installing devchat dependencies"
+        pip install --no-binary :all: "pydantic<2"
+        pip install charset-normalizer --no-binary :all:
+        pip install git+https://github.com/yangbobo2021/tiktoken.git
+        pip install .
+        echo ">>>>>>>>>>>> Finish devchat dependencies"
+        pip list
+        echo ">>>>>>>>>>>> Check site packages after install"
+        ls $SITE_PACKAGES
         
 
     # - name: Commit changes
