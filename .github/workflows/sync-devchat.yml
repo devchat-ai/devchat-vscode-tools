@@ -11,35 +11,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        ref: main
+    # - name: Checkout code
+    #   uses: actions/checkout@v2
+    #   with:
+    #     ref: main
 
     # - name: Create new branch
     #   run: |
     #     git checkout -b new-branch
 
-    - name: Install micromamba
-      run: |
-        wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
-        ./bin/micromamba shell init -s bash -p ~/micromamba
-        source ~/.bashrc
-        micromamba create -y -n devchat_no_binary python=3.8
-        micromamba activate devchat_no_binary
-  
-    - name: Checkout devchat repository to a temporary directory
-      uses: actions/checkout@v2
+    - name: Setup micromamba
+      uses: mamba-org/setup-micromamba@v1
       with:
-        repository: devchat-ai/devchat
-        path: ./temp-devchat
+        micromamba-version: "1.5.8-0"
+        init-shell: bash
+        environment-name: devchat_no_binary
+        create-args: >-
+          python=3.8
+      # run: |
+      #   "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
+      #   source ~/.bashrc
+      #   eval "$(micromamba shell init --shell bash --root-prefix=~/micromamba 2> /dev/null)"
+      #   micromamba create -y -n devchat_no_binary python=3.8
+      #   micromamba activate devchat_no_binary
     
-    - name: Run script
+    - name: Check python env
+      shell: micromamba-shell {0}
       run: |
-        cd ./temp-devchat
-        pip list
-        pip install typer
-        pip list
+        which mamba
+        mamba --help
+        python --version
+        pip --version
+        which python
+        which pip
+  
+    # - name: Checkout devchat repository to a temporary directory
+    #   uses: actions/checkout@v2
+    #   with:
+    #     repository: devchat-ai/devchat
+    #     path: ./temp-devchat
+    
+    # - name: Run script
+    #   run: |
+    #     cd ./temp-devchat
+    #     pip list
+    #     pip install typer
+    #     pip list
         
 
     # - name: Commit changes
