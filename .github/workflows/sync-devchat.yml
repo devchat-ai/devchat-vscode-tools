@@ -11,14 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # - name: Checkout code
-    #   uses: actions/checkout@v2
-    #   with:
-    #     ref: main
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: main
 
-    # - name: Create new branch
-    #   run: |
-    #     git checkout -b new-branch
+    - name: Create new branch
+      run: |
+        git checkout -b new-branch
+        ls
 
     - name: Setup micromamba
       uses: mamba-org/setup-micromamba@v1
@@ -33,7 +34,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: devchat-ai/devchat
-        path: ./temp-devchat
+        path: ./temp/devchat-repo
     
     - name: Install devchat dependencies
       shell: micromamba-shell {0}
@@ -42,10 +43,14 @@ jobs:
         pwd
         ls
         echo ">>>>>>>>>> Check site packages before install"
-        ls $SITE_PACKAGES
         SITE_PACKAGES=$(python -c "import site; print(site.getsitepackages()[0])")
+        ls -al $SITE_PACKAGES
         echo $SITE_PACKAGES
-        cd ./temp-devchat
+        ITEMS_BEFORE=$(mktemp)
+        ls $SITE_PACKAGES > "$ITEMS_BEFORE"
+        cat "$ITEMS_BEFORE"
+        echo ">>>>>>>>>> Start installing..."
+        cd ./temp/devchat-repo
         pip list
         echo ">>>> Installing devchat dependencies"
         pip install --no-binary :all: "pydantic<2"
@@ -56,7 +61,34 @@ jobs:
         pip list
         echo ">>>>>>>>>>>> Check site packages after install"
         ls $SITE_PACKAGES
-        
+        ITEMS_AFTER=$(mktemp)
+        echo ">>>>>>>>>>>>>>>>>>>>>>"
+        ls $SITE_PACKAGES > "$ITEMS_AFTER"
+        cat "$ITEMS_AFTER"
+        echo ">>>>>>>>>>>>>>>>>>>>>>"
+        ls -al
+        echo ">>>>>>>>>>>>>>>>>>>>>>Replace the site-packages with the new one"
+        ITEMS_DIFF=$(comm -13 "$ITEMS_BEFORE" "$ITEMS_AFTER")
+        echo ">>>>>>>>>>>>>>>>>>>>>> Items diff"
+        echo $ITEMS_DIFF
+        echo ">>>>>>>>>>>>>>>>>>>>>>"
+        cd ../..
+        pwd
+        tree -L 2
+        mv ./site-packages ./temp/site-packages-bk
+        tree -L 2
+        mkdir -p ./site-packages
+        tree -L 2
+        echo ">>>>>>>>>>>>>>>>>>>>>> copy the new site-packages"
+        for item in $ITEMS_DIFF; do
+          cp -r "$SITE_PACKAGES/$item" ./site-packages
+        done
+        echo ">>>>>>>>>>>>>>>>>>>>>> check the new site-packages"
+        tree -L 2
+      # cp -r $SITE_PACKAGES/* ./site-packages/
+      # tree -L 1
+
+
 
     # - name: Commit changes
     #   run: |
