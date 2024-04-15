@@ -16,10 +16,9 @@ jobs:
       with:
         ref: main
 
-    - name: Create new branch
-      run: |
-        git checkout -b new-branch
-        ls
+    # - name: Create new branch
+    #   run: |
+    #     git checkout -b update-packages-$(date +'%Y%m%d-%H%M%S')
 
     - name: Setup micromamba
       uses: mamba-org/setup-micromamba@v1
@@ -31,7 +30,7 @@ jobs:
           python=3.8
       
     - name: Checkout devchat repository to a temporary directory
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: devchat-ai/devchat
         path: ./temp/devchat-repo
@@ -90,11 +89,16 @@ jobs:
 
 
 
-    # - name: Commit changes
-    #   run: |
-    #     git config --local user.email "action@github.com"
-    #     git config --local user.name "GitHub Action"
-    #     git commit -am "Sync up devchat packages"
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "mingjing@merico.dev"
+        git config --local user.name "Update-Packages Action"
+        BRANCH_NAME=update-packages-$(date +'%Y%m%d-%H%M%S')
+        git checkout -b $BRANCH_NAME
+        git add ./site-packages
+        git commit -m "Update devchat site-packages"
+        git status
+        git push origin $BRANCH_NAME
 
     # - name: Push changes
     #   run: |
