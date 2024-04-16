@@ -1,10 +1,16 @@
 name: Sync up devchat packages
 
 on:
-  # workflow_dispatch:
-  push:
-    branches:
-      - ci
+  workflow_dispatch:
+    inputs:
+      devchat_branch:
+        description: "The branch of devchat to sync up with"
+        required: true
+        default: "main"
+        type: string
+  # push:
+  #   branches:
+  #     - ci
 
 jobs:
   sync:
@@ -33,6 +39,7 @@ jobs:
       with:
         repository: devchat-ai/devchat
         path: ./temp/devchat-repo
+        # ref: ${{ github.event.inputs.devchat_branch }}
     
     - name: Generate the latest site-packages for devchat
       shell: micromamba-shell {0}
