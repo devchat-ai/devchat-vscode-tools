@@ -39,7 +39,7 @@ jobs:
       with:
         repository: devchat-ai/devchat
         path: ./temp/devchat-repo
-        # ref: ${{ github.event.inputs.devchat_branch }}
+        ref: ${{ github.event.inputs.devchat_branch }}
     
     - name: Generate the latest site-packages for devchat
       shell: micromamba-shell {0}
