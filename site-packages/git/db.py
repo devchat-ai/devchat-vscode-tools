@@ -3,26 +3,25 @@
 
 """Module with our own gitdb implementation - it uses the git command."""
 
-from git.util import bin_to_hex, hex_to_bin
-from gitdb.base import OInfo, OStream
-from gitdb.db import GitDB
-from gitdb.db import LooseObjectDB
+__all__ = ["GitCmdObjectDB", "GitDB"]
 
+from gitdb.base import OInfo, OStream
+from gitdb.db import GitDB, LooseObjectDB
 from gitdb.exc import BadObject
+
+from git.util import bin_to_hex, hex_to_bin
 from git.exc import GitCommandError
 
 # typing-------------------------------------------------
 
 from typing import TYPE_CHECKING
+
 from git.types import PathLike
 
 if TYPE_CHECKING:
     from git.cmd import Git
 
-
 # --------------------------------------------------------
-
-__all__ = ("GitCmdObjectDB", "GitDB")
 
 
 class GitCmdObjectDB(LooseObjectDB):
@@ -30,9 +29,6 @@ class GitCmdObjectDB(LooseObjectDB):
     objects, pack files and an alternates file.
 
     It will create objects only in the loose object database.
-
-    :note: For now, we use the git command to do all the lookup, just until we
-        have packs and the other implementations.
     """
 
     def __init__(self, root_path: PathLike, git: "Git") -> None:
@@ -41,11 +37,12 @@ class GitCmdObjectDB(LooseObjectDB):
         self._git = git
 
     def info(self, binsha: bytes) -> OInfo:
+        """Get a git object header (using git itself)."""
         hexsha, typename, size = self._git.get_object_header(bin_to_hex(binsha))
         return OInfo(hex_to_bin(hexsha), typename, size)
 
     def stream(self, binsha: bytes) -> OStream:
-        """For now, all lookup is done by git itself"""
+        """Get git object data as a stream supporting ``read()`` (using git itself)."""
         hexsha, typename, size, stream = self._git.stream_object_data(bin_to_hex(binsha))
         return OStream(hex_to_bin(hexsha), typename, size, stream)
 
@@ -53,13 +50,16 @@ class GitCmdObjectDB(LooseObjectDB):
 
     def partial_to_complete_sha_hex(self, partial_hexsha: str) -> bytes:
         """
-        :return: Full binary 20 byte sha from the given partial hexsha
+        :return:
+            Full binary 20 byte sha from the given partial hexsha
 
-        :raise AmbiguousObjectName:
-        :raise BadObject:
+        :raise gitdb.exc.AmbiguousObjectName:
 
-        :note: Currently we only raise :class:`BadObject` as git does not communicate
-            AmbiguousObjects separately.
+        :raise gitdb.exc.BadObject:
+
+        :note:
+            Currently we only raise :exc:`~gitdb.exc.BadObject` as git does not
+            communicate ambiguous objects separately.
         """
         try:
             hexsha, _typename, _size = self._git.get_object_header(partial_hexsha)
