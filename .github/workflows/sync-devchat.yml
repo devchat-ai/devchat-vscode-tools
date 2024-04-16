@@ -25,6 +25,13 @@ jobs:
       with:
         ref: main
 
+    - name: Clone devchat repo to a temporary directory
+      uses: actions/checkout@v4
+      with:
+        repository: devchat-ai/devchat
+        path: ./temp/devchat-repo
+        ref: ${{ github.event.inputs.devchat_branch }}
+
     - name: Setup micromamba
       uses: mamba-org/setup-micromamba@v1
       with:
@@ -33,14 +40,7 @@ jobs:
         environment-name: devchat_no_binary
         create-args: >-
           python=3.8
-      
-    - name: Clone devchat repo to a temporary directory
-      uses: actions/checkout@v4
-      with:
-        repository: devchat-ai/devchat
-        path: ./temp/devchat-repo
-        ref: ${{ github.event.inputs.devchat_branch }}
-    
+
     - name: Generate the latest site-packages for devchat
       shell: micromamba-shell {0}
       run: |
