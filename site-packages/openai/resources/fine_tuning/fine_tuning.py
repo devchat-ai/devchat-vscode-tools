@@ -1,4 +1,4 @@
-# File generated from our OpenAPI spec by Stainless.
+# File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from .jobs import (
     AsyncJobsWithStreamingResponse,
 )
 from ..._compat import cached_property
+from .jobs.jobs import Jobs, AsyncJobs
 from ..._resource import SyncAPIResource, AsyncAPIResource
 
 __all__ = ["FineTuning", "AsyncFineTuning"]
