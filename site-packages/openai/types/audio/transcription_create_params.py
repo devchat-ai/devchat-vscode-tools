@@ -1,8 +1,8 @@
-# File generated from our OpenAPI spec by Stainless.
+# File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 from __future__ import annotations
 
-from typing import Union
+from typing import List, Union
 from typing_extensions import Literal, Required, TypedDict
 
 from ..._types import FileTypes
@@ -18,7 +18,11 @@ class TranscriptionCreateParams(TypedDict, total=False):
     """
 
     model: Required[Union[str, Literal["whisper-1"]]]
-    """ID of the model to use. Only `whisper-1` is currently available."""
+    """ID of the model to use.
+
+    Only `whisper-1` (which is powered by our open source Whisper V2 model) is
+    currently available.
+    """
 
     language: str
     """The language of the input audio.
@@ -49,4 +53,13 @@ class TranscriptionCreateParams(TypedDict, total=False):
     0.2 will make it more focused and deterministic. If set to 0, the model will use
     [log probability](https://en.wikipedia.org/wiki/Log_probability) to
     automatically increase the temperature until certain thresholds are hit.
+    """
+
+    timestamp_granularities: List[Literal["word", "segment"]]
+    """The timestamp granularities to populate for this transcription.
+
+    `response_format` must be set `verbose_json` to use timestamp granularities.
+    Either or both of these options are supported: `word`, or `segment`. Note: There
+    is no additional latency for segment timestamps, but generating word timestamps
+    incurs additional latency.
     """
