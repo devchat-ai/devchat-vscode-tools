@@ -1,12 +1,20 @@
 # This module is part of GitPython and is released under the
 # 3-Clause BSD License: https://opensource.org/license/bsd-3-clause/
 
-import git
-from git.exc import InvalidGitRepositoryError
-from git.config import GitConfigParser
+__all__ = [
+    "sm_section",
+    "sm_name",
+    "mkhead",
+    "find_first_remote_branch",
+    "SubmoduleConfigParser",
+]
+
 from io import BytesIO
 import weakref
 
+import git
+from git.config import GitConfigParser
+from git.exc import InvalidGitRepositoryError
 
 # typing -----------------------------------------------------------------------
 
@@ -15,27 +23,19 @@ from typing import Any, Sequence, TYPE_CHECKING, Union
 from git.types import PathLike
 
 if TYPE_CHECKING:
-    from .base import Submodule
     from weakref import ReferenceType
+
+    from git.refs import Head, RemoteReference
+    from git.remote import Remote
     from git.repo import Repo
-    from git.refs import Head
-    from git import Remote
-    from git.refs import RemoteReference
 
-
-__all__ = (
-    "sm_section",
-    "sm_name",
-    "mkhead",
-    "find_first_remote_branch",
-    "SubmoduleConfigParser",
-)
+    from .base import Submodule
 
 # { Utilities
 
 
 def sm_section(name: str) -> str:
-    """:return: Section title used in .gitmodules configuration file"""
+    """:return: Section title used in ``.gitmodules`` configuration file"""
     return f'submodule "{name}"'
 
 
@@ -51,7 +51,8 @@ def mkhead(repo: "Repo", path: PathLike) -> "Head":
 
 
 def find_first_remote_branch(remotes: Sequence["Remote"], branch_name: str) -> "RemoteReference":
-    """Find the remote branch matching the name of the given branch or raise InvalidGitRepositoryError."""
+    """Find the remote branch matching the name of the given branch or raise
+    :exc:`~git.exc.InvalidGitRepositoryError`."""
     for remote in remotes:
         try:
             return remote.refs[branch_name]
@@ -64,16 +65,16 @@ def find_first_remote_branch(remotes: Sequence["Remote"], branch_name: str) -> "
 
 # } END utilities
 
-
 # { Classes
 
 
 class SubmoduleConfigParser(GitConfigParser):
-    """Catches calls to _write, and updates the .gitmodules blob in the index
-    with the new data, if we have written into a stream.
+    """Catches calls to :meth:`~git.config.GitConfigParser.write`, and updates the
+    ``.gitmodules`` blob in the index with the new data, if we have written into a
+    stream.
 
-    Otherwise it would add the local file to the index to make it correspond
-    with the working tree. Additionally, the cache must be cleared.
+    Otherwise it would add the local file to the index to make it correspond with the
+    working tree. Additionally, the cache must be cleared.
 
     Please note that no mutating method will work in bare mode.
     """
@@ -86,8 +87,8 @@ class SubmoduleConfigParser(GitConfigParser):
 
     # { Interface
     def set_submodule(self, submodule: "Submodule") -> None:
-        """Set this instance's submodule. It must be called before
-        the first write operation begins."""
+        """Set this instance's submodule. It must be called before the first write
+        operation begins."""
         self._smref = weakref.ref(submodule)
 
     def flush_to_index(self) -> None:

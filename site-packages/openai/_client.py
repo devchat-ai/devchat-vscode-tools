@@ -1,4 +1,4 @@
-# File generated from our OpenAPI spec by Stainless.
+# File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 from __future__ import annotations
 
@@ -57,24 +57,29 @@ class OpenAI(SyncAPIClient):
     models: resources.Models
     fine_tuning: resources.FineTuning
     beta: resources.Beta
+    batches: resources.Batches
     with_raw_response: OpenAIWithRawResponse
     with_streaming_response: OpenAIWithStreamedResponse
 
     # client options
     api_key: str
     organization: str | None
+    project: str | None
 
     def __init__(
         self,
         *,
         api_key: str | None = None,
         organization: str | None = None,
+        project: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: Union[float, Timeout, None, NotGiven] = NOT_GIVEN,
         max_retries: int = DEFAULT_MAX_RETRIES,
         default_headers: Mapping[str, str] | None = None,
         default_query: Mapping[str, object] | None = None,
-        # Configure a custom httpx client. See the [httpx documentation](https://www.python-httpx.org/api/#client) for more details.
+        # Configure a custom httpx client.
+        # We provide a `DefaultHttpxClient` class that you can pass to retain the default values we use for `limits`, `timeout` & `follow_redirects`.
+        # See the [httpx documentation](https://www.python-httpx.org/api/#client) for more details.
         http_client: httpx.Client | None = None,
         # Enable or disable schema validation for data returned by the API.
         # When enabled an error APIResponseValidationError is raised
@@ -91,6 +96,7 @@ class OpenAI(SyncAPIClient):
         This automatically infers the following arguments from their corresponding environment variables if they are not provided:
         - `api_key` from `OPENAI_API_KEY`
         - `organization` from `OPENAI_ORG_ID`
+        - `project` from `OPENAI_PROJECT_ID`
         """
         if api_key is None:
             api_key = os.environ.get("OPENAI_API_KEY")
@@ -103,6 +109,10 @@ class OpenAI(SyncAPIClient):
         if organization is None:
             organization = os.environ.get("OPENAI_ORG_ID")
         self.organization = organization
+
+        if project is None:
+            project = os.environ.get("OPENAI_PROJECT_ID")
+        self.project = project
 
         if base_url is None:
             base_url = os.environ.get("OPENAI_BASE_URL")
@@ -132,6 +142,7 @@ class OpenAI(SyncAPIClient):
         self.models = resources.Models(self)
         self.fine_tuning = resources.FineTuning(self)
         self.beta = resources.Beta(self)
+        self.batches = resources.Batches(self)
         self.with_raw_response = OpenAIWithRawResponse(self)
         self.with_streaming_response = OpenAIWithStreamedResponse(self)
 
@@ -153,6 +164,7 @@ class OpenAI(SyncAPIClient):
             **super().default_headers,
             "X-Stainless-Async": "false",
             "OpenAI-Organization": self.organization if self.organization is not None else Omit(),
+            "OpenAI-Project": self.project if self.project is not None else Omit(),
             **self._custom_headers,
         }
 
@@ -161,6 +173,7 @@ class OpenAI(SyncAPIClient):
         *,
         api_key: str | None = None,
         organization: str | None = None,
+        project: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = NOT_GIVEN,
         http_client: httpx.Client | None = None,
@@ -196,6 +209,7 @@ class OpenAI(SyncAPIClient):
         return self.__class__(
             api_key=api_key or self.api_key,
             organization=organization or self.organization,
+            project=project or self.project,
             base_url=base_url or self.base_url,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
             http_client=http_client,
@@ -255,24 +269,29 @@ class AsyncOpenAI(AsyncAPIClient):
     models: resources.AsyncModels
     fine_tuning: resources.AsyncFineTuning
     beta: resources.AsyncBeta
+    batches: resources.AsyncBatches
     with_raw_response: AsyncOpenAIWithRawResponse
     with_streaming_response: AsyncOpenAIWithStreamedResponse
 
     # client options
     api_key: str
     organization: str | None
+    project: str | None
 
     def __init__(
         self,
         *,
         api_key: str | None = None,
         organization: str | None = None,
+        project: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: Union[float, Timeout, None, NotGiven] = NOT_GIVEN,
         max_retries: int = DEFAULT_MAX_RETRIES,
         default_headers: Mapping[str, str] | None = None,
         default_query: Mapping[str, object] | None = None,
-        # Configure a custom httpx client. See the [httpx documentation](https://www.python-httpx.org/api/#asyncclient) for more details.
+        # Configure a custom httpx client.
+        # We provide a `DefaultAsyncHttpxClient` class that you can pass to retain the default values we use for `limits`, `timeout` & `follow_redirects`.
+        # See the [httpx documentation](https://www.python-httpx.org/api/#asyncclient) for more details.
         http_client: httpx.AsyncClient | None = None,
         # Enable or disable schema validation for data returned by the API.
         # When enabled an error APIResponseValidationError is raised
@@ -289,6 +308,7 @@ class AsyncOpenAI(AsyncAPIClient):
         This automatically infers the following arguments from their corresponding environment variables if they are not provided:
         - `api_key` from `OPENAI_API_KEY`
         - `organization` from `OPENAI_ORG_ID`
+        - `project` from `OPENAI_PROJECT_ID`
         """
         if api_key is None:
             api_key = os.environ.get("OPENAI_API_KEY")
@@ -301,6 +321,10 @@ class AsyncOpenAI(AsyncAPIClient):
         if organization is None:
             organization = os.environ.get("OPENAI_ORG_ID")
         self.organization = organization
+
+        if project is None:
+            project = os.environ.get("OPENAI_PROJECT_ID")
+        self.project = project
 
         if base_url is None:
             base_url = os.environ.get("OPENAI_BASE_URL")
@@ -330,6 +354,7 @@ class AsyncOpenAI(AsyncAPIClient):
         self.models = resources.AsyncModels(self)
         self.fine_tuning = resources.AsyncFineTuning(self)
         self.beta = resources.AsyncBeta(self)
+        self.batches = resources.AsyncBatches(self)
         self.with_raw_response = AsyncOpenAIWithRawResponse(self)
         self.with_streaming_response = AsyncOpenAIWithStreamedResponse(self)
 
@@ -351,6 +376,7 @@ class AsyncOpenAI(AsyncAPIClient):
             **super().default_headers,
             "X-Stainless-Async": f"async:{get_async_library()}",
             "OpenAI-Organization": self.organization if self.organization is not None else Omit(),
+            "OpenAI-Project": self.project if self.project is not None else Omit(),
             **self._custom_headers,
         }
 
@@ -359,6 +385,7 @@ class AsyncOpenAI(AsyncAPIClient):
         *,
         api_key: str | None = None,
         organization: str | None = None,
+        project: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = NOT_GIVEN,
         http_client: httpx.AsyncClient | None = None,
@@ -394,6 +421,7 @@ class AsyncOpenAI(AsyncAPIClient):
         return self.__class__(
             api_key=api_key or self.api_key,
             organization=organization or self.organization,
+            project=project or self.project,
             base_url=base_url or self.base_url,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
             http_client=http_client,
@@ -454,6 +482,7 @@ class OpenAIWithRawResponse:
         self.models = resources.ModelsWithRawResponse(client.models)
         self.fine_tuning = resources.FineTuningWithRawResponse(client.fine_tuning)
         self.beta = resources.BetaWithRawResponse(client.beta)
+        self.batches = resources.BatchesWithRawResponse(client.batches)
 
 
 class AsyncOpenAIWithRawResponse:
@@ -468,6 +497,7 @@ class AsyncOpenAIWithRawResponse:
         self.models = resources.AsyncModelsWithRawResponse(client.models)
         self.fine_tuning = resources.AsyncFineTuningWithRawResponse(client.fine_tuning)
         self.beta = resources.AsyncBetaWithRawResponse(client.beta)
+        self.batches = resources.AsyncBatchesWithRawResponse(client.batches)
 
 
 class OpenAIWithStreamedResponse:
@@ -482,6 +512,7 @@ class OpenAIWithStreamedResponse:
         self.models = resources.ModelsWithStreamingResponse(client.models)
         self.fine_tuning = resources.FineTuningWithStreamingResponse(client.fine_tuning)
         self.beta = resources.BetaWithStreamingResponse(client.beta)
+        self.batches = resources.BatchesWithStreamingResponse(client.batches)
 
 
 class AsyncOpenAIWithStreamedResponse:
@@ -496,6 +527,7 @@ class AsyncOpenAIWithStreamedResponse:
         self.models = resources.AsyncModelsWithStreamingResponse(client.models)
         self.fine_tuning = resources.AsyncFineTuningWithStreamingResponse(client.fine_tuning)
         self.beta = resources.AsyncBetaWithStreamingResponse(client.beta)
+        self.batches = resources.AsyncBatchesWithStreamingResponse(client.batches)
 
 
 Client = OpenAI
