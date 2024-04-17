@@ -51,7 +51,7 @@ jobs:
         cd ./temp/devchat-repo
         DEVCHAT_HEXSHA=$(git rev-parse HEAD | cut -c 1-8)
         DEVCHAT_BRANCH=$(git branch --show-current)
-        pip install --no-binary :all: "pydantic<2"
+        pip install --no-binary :all: "pydantic==1.10.14"
         pip install charset-normalizer --no-binary :all:
         pip install git+https://github.com/yangbobo2021/tiktoken.git
         pip install .
