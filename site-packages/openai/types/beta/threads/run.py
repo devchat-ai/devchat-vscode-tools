@@ -105,13 +105,6 @@ class Run(BaseModel):
     failed_at: Optional[int] = None
     """The Unix timestamp (in seconds) for when the run failed."""
 
-    file_ids: List[str]
-    """
-    The list of [File](https://platform.openai.com/docs/api-reference/files) IDs the
-    [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-    this run.
-    """
-
     incomplete_details: Optional[IncompleteDetails] = None
     """Details on why the run is incomplete.
 
@@ -169,7 +162,7 @@ class Run(BaseModel):
 
     Compatible with
     [GPT-4 Turbo](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo) and
-    all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`.
+    all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
 
     Setting to `{ "type": "json_object" }` enables JSON mode, which guarantees the
     message the model generates is valid JSON.
@@ -204,7 +197,7 @@ class Run(BaseModel):
     Controls which (if any) tool is called by the model. `none` means the model will
     not call any tools and instead generates a message. `auto` is the default value
     and means the model can pick between generating a message or calling a tool.
-    Specifying a particular tool like `{"type": "TOOL_TYPE"}` or
+    Specifying a particular tool like `{"type": "file_search"}` or
     `{"type": "function", "function": {"name": "my_function"}}` forces the model to
     call that tool.
     """
@@ -217,6 +210,10 @@ class Run(BaseModel):
     """
 
     truncation_strategy: Optional[TruncationStrategy] = None
+    """Controls for how a thread will be truncated prior to the run.
+
+    Use this to control the intial context window of the run.
+    """
 
     usage: Optional[Usage] = None
     """Usage statistics related to the run.
@@ -227,3 +224,6 @@ class Run(BaseModel):
 
     temperature: Optional[float] = None
     """The sampling temperature used for this run. If not set, defaults to 1."""
+
+    top_p: Optional[float] = None
+    """The nucleus sampling value used for this run. If not set, defaults to 1."""
