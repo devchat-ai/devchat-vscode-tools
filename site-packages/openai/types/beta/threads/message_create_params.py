@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Union, Iterable, Optional
 from typing_extensions import Literal, Required, TypedDict
 
-__all__ = ["MessageCreateParams"]
+from ..file_search_tool_param import FileSearchToolParam
+from ..code_interpreter_tool_param import CodeInterpreterToolParam
+
+__all__ = ["MessageCreateParams", "Attachment", "AttachmentTool"]
 
 
 class MessageCreateParams(TypedDict, total=False):
@@ -21,13 +24,8 @@ class MessageCreateParams(TypedDict, total=False):
       value to insert messages from the assistant into the conversation.
     """
 
-    file_ids: List[str]
-    """
-    A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
-    the message should use. There can be a maximum of 10 files attached to a
-    message. Useful for tools like `retrieval` and `code_interpreter` that can
-    access and use files.
-    """
+    attachments: Optional[Iterable[Attachment]]
+    """A list of files attached to the message, and the tools they should be added to."""
 
     metadata: Optional[object]
     """Set of 16 key-value pairs that can be attached to an object.
@@ -36,3 +34,14 @@ class MessageCreateParams(TypedDict, total=False):
     structured format. Keys can be a maximum of 64 characters long and values can be
     a maxium of 512 characters long.
     """
+
+
+AttachmentTool = Union[CodeInterpreterToolParam, FileSearchToolParam]
+
+
+class Attachment(TypedDict, total=False):
+    file_id: str
+    """The ID of the file to attach to the message."""
+
+    tools: Iterable[AttachmentTool]
+    """The tools to add this file to."""

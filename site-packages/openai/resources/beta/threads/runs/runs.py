@@ -115,6 +115,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -144,13 +145,13 @@ class Runs(SyncAPIResource):
           max_completion_tokens: The maximum number of completion tokens that may be used over the course of the
               run. The run will make a best effort to use only the number of completion tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              completion tokens specified, the run will end with status `complete`. See
+              completion tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           max_prompt_tokens: The maximum number of prompt tokens that may be used over the course of the run.
               The run will make a best effort to use only the number of prompt tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              prompt tokens specified, the run will end with status `complete`. See
+              prompt tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -165,7 +166,7 @@ class Runs(SyncAPIResource):
 
           response_format: Specifies the format that the model must output. Compatible with
               [GPT-4 Turbo](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo) and
-              all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`.
+              all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
 
               Setting to `{ "type": "json_object" }` enables JSON mode, which guarantees the
               message the model generates is valid JSON.
@@ -189,12 +190,21 @@ class Runs(SyncAPIResource):
           tool_choice: Controls which (if any) tool is called by the model. `none` means the model will
               not call any tools and instead generates a message. `auto` is the default value
               and means the model can pick between generating a message or calling a tool.
-              Specifying a particular tool like `{"type": "TOOL_TYPE"}` or
+              Specifying a particular tool like `{"type": "file_search"}` or
               `{"type": "function", "function": {"name": "my_function"}}` forces the model to
               call that tool.
 
           tools: Override the tools the assistant can use for this run. This is useful for
               modifying the behavior on a per-run basis.
+
+          top_p: An alternative to sampling with temperature, called nucleus sampling, where the
+              model considers the results of the tokens with top_p probability mass. So 0.1
+              means only the tokens comprising the top 10% probability mass are considered.
+
+              We generally recommend altering this or temperature but not both.
+
+          truncation_strategy: Controls for how a thread will be truncated prior to the run. Use this to
+              control the intial context window of the run.
 
           extra_headers: Send extra headers
 
@@ -248,6 +258,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -281,13 +292,13 @@ class Runs(SyncAPIResource):
           max_completion_tokens: The maximum number of completion tokens that may be used over the course of the
               run. The run will make a best effort to use only the number of completion tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              completion tokens specified, the run will end with status `complete`. See
+              completion tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           max_prompt_tokens: The maximum number of prompt tokens that may be used over the course of the run.
               The run will make a best effort to use only the number of prompt tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              prompt tokens specified, the run will end with status `complete`. See
+              prompt tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -302,7 +313,7 @@ class Runs(SyncAPIResource):
 
           response_format: Specifies the format that the model must output. Compatible with
               [GPT-4 Turbo](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo) and
-              all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`.
+              all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
 
               Setting to `{ "type": "json_object" }` enables JSON mode, which guarantees the
               message the model generates is valid JSON.
@@ -322,12 +333,21 @@ class Runs(SyncAPIResource):
           tool_choice: Controls which (if any) tool is called by the model. `none` means the model will
               not call any tools and instead generates a message. `auto` is the default value
               and means the model can pick between generating a message or calling a tool.
-              Specifying a particular tool like `{"type": "TOOL_TYPE"}` or
+              Specifying a particular tool like `{"type": "file_search"}` or
               `{"type": "function", "function": {"name": "my_function"}}` forces the model to
               call that tool.
 
           tools: Override the tools the assistant can use for this run. This is useful for
               modifying the behavior on a per-run basis.
+
+          top_p: An alternative to sampling with temperature, called nucleus sampling, where the
+              model considers the results of the tokens with top_p probability mass. So 0.1
+              means only the tokens comprising the top 10% probability mass are considered.
+
+              We generally recommend altering this or temperature but not both.
+
+          truncation_strategy: Controls for how a thread will be truncated prior to the run. Use this to
+              control the intial context window of the run.
 
           extra_headers: Send extra headers
 
@@ -381,6 +401,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -414,13 +435,13 @@ class Runs(SyncAPIResource):
           max_completion_tokens: The maximum number of completion tokens that may be used over the course of the
               run. The run will make a best effort to use only the number of completion tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              completion tokens specified, the run will end with status `complete`. See
+              completion tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           max_prompt_tokens: The maximum number of prompt tokens that may be used over the course of the run.
               The run will make a best effort to use only the number of prompt tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              prompt tokens specified, the run will end with status `complete`. See
+              prompt tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -435,7 +456,7 @@ class Runs(SyncAPIResource):
 
           response_format: Specifies the format that the model must output. Compatible with
               [GPT-4 Turbo](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo) and
-              all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`.
+              all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
 
               Setting to `{ "type": "json_object" }` enables JSON mode, which guarantees the
               message the model generates is valid JSON.
@@ -455,12 +476,21 @@ class Runs(SyncAPIResource):
           tool_choice: Controls which (if any) tool is called by the model. `none` means the model will
               not call any tools and instead generates a message. `auto` is the default value
               and means the model can pick between generating a message or calling a tool.
-              Specifying a particular tool like `{"type": "TOOL_TYPE"}` or
+              Specifying a particular tool like `{"type": "file_search"}` or
               `{"type": "function", "function": {"name": "my_function"}}` forces the model to
               call that tool.
 
           tools: Override the tools the assistant can use for this run. This is useful for
               modifying the behavior on a per-run basis.
+
+          top_p: An alternative to sampling with temperature, called nucleus sampling, where the
+              model considers the results of the tokens with top_p probability mass. So 0.1
+              means only the tokens comprising the top 10% probability mass are considered.
+
+              We generally recommend altering this or temperature but not both.
+
+          truncation_strategy: Controls for how a thread will be truncated prior to the run. Use this to
+              control the intial context window of the run.
 
           extra_headers: Send extra headers
 
@@ -514,6 +544,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -524,7 +555,7 @@ class Runs(SyncAPIResource):
     ) -> Run | Stream[AssistantStreamEvent]:
         if not thread_id:
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return self._post(
             f"/threads/{thread_id}/runs",
             body=maybe_transform(
@@ -542,6 +573,7 @@ class Runs(SyncAPIResource):
                     "temperature": temperature,
                     "tool_choice": tool_choice,
                     "tools": tools,
+                    "top_p": top_p,
                     "truncation_strategy": truncation_strategy,
                 },
                 run_create_params.RunCreateParams,
@@ -582,7 +614,7 @@ class Runs(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
         if not run_id:
             raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return self._get(
             f"/threads/{thread_id}/runs/{run_id}",
             options=make_request_options(
@@ -625,7 +657,7 @@ class Runs(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
         if not run_id:
             raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return self._post(
             f"/threads/{thread_id}/runs/{run_id}",
             body=maybe_transform({"metadata": metadata}, run_update_params.RunUpdateParams),
@@ -680,7 +712,7 @@ class Runs(SyncAPIResource):
         """
         if not thread_id:
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return self._get_api_list(
             f"/threads/{thread_id}/runs",
             page=SyncCursorPage[Run],
@@ -730,7 +762,7 @@ class Runs(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
         if not run_id:
             raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return self._post(
             f"/threads/{thread_id}/runs/{run_id}/cancel",
             options=make_request_options(
@@ -778,6 +810,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         poll_interval_ms: int | NotGiven = NOT_GIVEN,
         thread_id: str,
@@ -810,6 +843,7 @@ class Runs(SyncAPIResource):
             stream=False,
             tools=tools,
             truncation_strategy=truncation_strategy,
+            top_p=top_p,
             extra_headers=extra_headers,
             extra_query=extra_query,
             extra_body=extra_body,
@@ -866,6 +900,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -919,6 +954,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         event_handler: AssistantEventHandlerT,
@@ -972,6 +1008,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         event_handler: AssistantEventHandlerT | None = None,
@@ -987,7 +1024,7 @@ class Runs(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
 
         extra_headers = {
-            "OpenAI-Beta": "assistants=v1",
+            "OpenAI-Beta": "assistants=v2",
             "X-Stainless-Stream-Helper": "threads.runs.create_and_stream",
             "X-Stainless-Custom-Event-Handler": "true" if event_handler else "false",
             **(extra_headers or {}),
@@ -1011,6 +1048,7 @@ class Runs(SyncAPIResource):
                     "stream": True,
                     "tools": tools,
                     "truncation_strategy": truncation_strategy,
+                    "top_p": top_p,
                 },
                 run_create_params.RunCreateParams,
             ),
@@ -1108,6 +1146,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -1160,6 +1199,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         event_handler: AssistantEventHandlerT,
@@ -1212,6 +1252,7 @@ class Runs(SyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         event_handler: AssistantEventHandlerT | None = None,
@@ -1227,7 +1268,7 @@ class Runs(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
 
         extra_headers = {
-            "OpenAI-Beta": "assistants=v1",
+            "OpenAI-Beta": "assistants=v2",
             "X-Stainless-Stream-Helper": "threads.runs.create_and_stream",
             "X-Stainless-Custom-Event-Handler": "true" if event_handler else "false",
             **(extra_headers or {}),
@@ -1251,6 +1292,7 @@ class Runs(SyncAPIResource):
                     "stream": True,
                     "tools": tools,
                     "truncation_strategy": truncation_strategy,
+                    "top_p": top_p,
                 },
                 run_create_params.RunCreateParams,
             ),
@@ -1396,7 +1438,7 @@ class Runs(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
         if not run_id:
             raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return self._post(
             f"/threads/{thread_id}/runs/{run_id}/submit_tool_outputs",
             body=maybe_transform(
@@ -1522,7 +1564,7 @@ class Runs(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
 
         extra_headers = {
-            "OpenAI-Beta": "assistants=v1",
+            "OpenAI-Beta": "assistants=v2",
             "X-Stainless-Stream-Helper": "threads.runs.submit_tool_outputs_stream",
             "X-Stainless-Custom-Event-Handler": "true" if event_handler else "false",
             **(extra_headers or {}),
@@ -1602,6 +1644,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -1631,13 +1674,13 @@ class AsyncRuns(AsyncAPIResource):
           max_completion_tokens: The maximum number of completion tokens that may be used over the course of the
               run. The run will make a best effort to use only the number of completion tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              completion tokens specified, the run will end with status `complete`. See
+              completion tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           max_prompt_tokens: The maximum number of prompt tokens that may be used over the course of the run.
               The run will make a best effort to use only the number of prompt tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              prompt tokens specified, the run will end with status `complete`. See
+              prompt tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -1652,7 +1695,7 @@ class AsyncRuns(AsyncAPIResource):
 
           response_format: Specifies the format that the model must output. Compatible with
               [GPT-4 Turbo](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo) and
-              all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`.
+              all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
 
               Setting to `{ "type": "json_object" }` enables JSON mode, which guarantees the
               message the model generates is valid JSON.
@@ -1676,12 +1719,21 @@ class AsyncRuns(AsyncAPIResource):
           tool_choice: Controls which (if any) tool is called by the model. `none` means the model will
               not call any tools and instead generates a message. `auto` is the default value
               and means the model can pick between generating a message or calling a tool.
-              Specifying a particular tool like `{"type": "TOOL_TYPE"}` or
+              Specifying a particular tool like `{"type": "file_search"}` or
               `{"type": "function", "function": {"name": "my_function"}}` forces the model to
               call that tool.
 
           tools: Override the tools the assistant can use for this run. This is useful for
               modifying the behavior on a per-run basis.
+
+          top_p: An alternative to sampling with temperature, called nucleus sampling, where the
+              model considers the results of the tokens with top_p probability mass. So 0.1
+              means only the tokens comprising the top 10% probability mass are considered.
+
+              We generally recommend altering this or temperature but not both.
+
+          truncation_strategy: Controls for how a thread will be truncated prior to the run. Use this to
+              control the intial context window of the run.
 
           extra_headers: Send extra headers
 
@@ -1735,6 +1787,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -1768,13 +1821,13 @@ class AsyncRuns(AsyncAPIResource):
           max_completion_tokens: The maximum number of completion tokens that may be used over the course of the
               run. The run will make a best effort to use only the number of completion tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              completion tokens specified, the run will end with status `complete`. See
+              completion tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           max_prompt_tokens: The maximum number of prompt tokens that may be used over the course of the run.
               The run will make a best effort to use only the number of prompt tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              prompt tokens specified, the run will end with status `complete`. See
+              prompt tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -1789,7 +1842,7 @@ class AsyncRuns(AsyncAPIResource):
 
           response_format: Specifies the format that the model must output. Compatible with
               [GPT-4 Turbo](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo) and
-              all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`.
+              all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
 
               Setting to `{ "type": "json_object" }` enables JSON mode, which guarantees the
               message the model generates is valid JSON.
@@ -1809,12 +1862,21 @@ class AsyncRuns(AsyncAPIResource):
           tool_choice: Controls which (if any) tool is called by the model. `none` means the model will
               not call any tools and instead generates a message. `auto` is the default value
               and means the model can pick between generating a message or calling a tool.
-              Specifying a particular tool like `{"type": "TOOL_TYPE"}` or
+              Specifying a particular tool like `{"type": "file_search"}` or
               `{"type": "function", "function": {"name": "my_function"}}` forces the model to
               call that tool.
 
           tools: Override the tools the assistant can use for this run. This is useful for
               modifying the behavior on a per-run basis.
+
+          top_p: An alternative to sampling with temperature, called nucleus sampling, where the
+              model considers the results of the tokens with top_p probability mass. So 0.1
+              means only the tokens comprising the top 10% probability mass are considered.
+
+              We generally recommend altering this or temperature but not both.
+
+          truncation_strategy: Controls for how a thread will be truncated prior to the run. Use this to
+              control the intial context window of the run.
 
           extra_headers: Send extra headers
 
@@ -1868,6 +1930,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -1901,13 +1964,13 @@ class AsyncRuns(AsyncAPIResource):
           max_completion_tokens: The maximum number of completion tokens that may be used over the course of the
               run. The run will make a best effort to use only the number of completion tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              completion tokens specified, the run will end with status `complete`. See
+              completion tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           max_prompt_tokens: The maximum number of prompt tokens that may be used over the course of the run.
               The run will make a best effort to use only the number of prompt tokens
               specified, across multiple turns of the run. If the run exceeds the number of
-              prompt tokens specified, the run will end with status `complete`. See
+              prompt tokens specified, the run will end with status `incomplete`. See
               `incomplete_details` for more info.
 
           metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -1922,7 +1985,7 @@ class AsyncRuns(AsyncAPIResource):
 
           response_format: Specifies the format that the model must output. Compatible with
               [GPT-4 Turbo](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo) and
-              all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`.
+              all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
 
               Setting to `{ "type": "json_object" }` enables JSON mode, which guarantees the
               message the model generates is valid JSON.
@@ -1942,12 +2005,21 @@ class AsyncRuns(AsyncAPIResource):
           tool_choice: Controls which (if any) tool is called by the model. `none` means the model will
               not call any tools and instead generates a message. `auto` is the default value
               and means the model can pick between generating a message or calling a tool.
-              Specifying a particular tool like `{"type": "TOOL_TYPE"}` or
+              Specifying a particular tool like `{"type": "file_search"}` or
               `{"type": "function", "function": {"name": "my_function"}}` forces the model to
               call that tool.
 
           tools: Override the tools the assistant can use for this run. This is useful for
               modifying the behavior on a per-run basis.
+
+          top_p: An alternative to sampling with temperature, called nucleus sampling, where the
+              model considers the results of the tokens with top_p probability mass. So 0.1
+              means only the tokens comprising the top 10% probability mass are considered.
+
+              We generally recommend altering this or temperature but not both.
+
+          truncation_strategy: Controls for how a thread will be truncated prior to the run. Use this to
+              control the intial context window of the run.
 
           extra_headers: Send extra headers
 
@@ -2001,6 +2073,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -2011,7 +2084,7 @@ class AsyncRuns(AsyncAPIResource):
     ) -> Run | AsyncStream[AssistantStreamEvent]:
         if not thread_id:
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return await self._post(
             f"/threads/{thread_id}/runs",
             body=await async_maybe_transform(
@@ -2029,6 +2102,7 @@ class AsyncRuns(AsyncAPIResource):
                     "temperature": temperature,
                     "tool_choice": tool_choice,
                     "tools": tools,
+                    "top_p": top_p,
                     "truncation_strategy": truncation_strategy,
                 },
                 run_create_params.RunCreateParams,
@@ -2069,7 +2143,7 @@ class AsyncRuns(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
         if not run_id:
             raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return await self._get(
             f"/threads/{thread_id}/runs/{run_id}",
             options=make_request_options(
@@ -2112,7 +2186,7 @@ class AsyncRuns(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
         if not run_id:
             raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return await self._post(
             f"/threads/{thread_id}/runs/{run_id}",
             body=await async_maybe_transform({"metadata": metadata}, run_update_params.RunUpdateParams),
@@ -2167,7 +2241,7 @@ class AsyncRuns(AsyncAPIResource):
         """
         if not thread_id:
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return self._get_api_list(
             f"/threads/{thread_id}/runs",
             page=AsyncCursorPage[Run],
@@ -2217,7 +2291,7 @@ class AsyncRuns(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
         if not run_id:
             raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return await self._post(
             f"/threads/{thread_id}/runs/{run_id}/cancel",
             options=make_request_options(
@@ -2265,6 +2339,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         poll_interval_ms: int | NotGiven = NOT_GIVEN,
         thread_id: str,
@@ -2297,6 +2372,7 @@ class AsyncRuns(AsyncAPIResource):
             stream=False,
             tools=tools,
             truncation_strategy=truncation_strategy,
+            top_p=top_p,
             extra_headers=extra_headers,
             extra_query=extra_query,
             extra_body=extra_body,
@@ -2353,6 +2429,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -2406,6 +2483,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         event_handler: AsyncAssistantEventHandlerT,
@@ -2459,6 +2537,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         event_handler: AsyncAssistantEventHandlerT | None = None,
@@ -2477,7 +2556,7 @@ class AsyncRuns(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
 
         extra_headers = {
-            "OpenAI-Beta": "assistants=v1",
+            "OpenAI-Beta": "assistants=v2",
             "X-Stainless-Stream-Helper": "threads.runs.create_and_stream",
             "X-Stainless-Custom-Event-Handler": "true" if event_handler else "false",
             **(extra_headers or {}),
@@ -2500,6 +2579,7 @@ class AsyncRuns(AsyncAPIResource):
                     "stream": True,
                     "tools": tools,
                     "truncation_strategy": truncation_strategy,
+                    "top_p": top_p,
                 },
                 run_create_params.RunCreateParams,
             ),
@@ -2597,6 +2677,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -2649,6 +2730,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         event_handler: AsyncAssistantEventHandlerT,
@@ -2701,6 +2783,7 @@ class AsyncRuns(AsyncAPIResource):
         temperature: Optional[float] | NotGiven = NOT_GIVEN,
         tool_choice: Optional[AssistantToolChoiceOptionParam] | NotGiven = NOT_GIVEN,
         tools: Optional[Iterable[AssistantToolParam]] | NotGiven = NOT_GIVEN,
+        top_p: Optional[float] | NotGiven = NOT_GIVEN,
         truncation_strategy: Optional[run_create_params.TruncationStrategy] | NotGiven = NOT_GIVEN,
         thread_id: str,
         event_handler: AsyncAssistantEventHandlerT | None = None,
@@ -2719,7 +2802,7 @@ class AsyncRuns(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
 
         extra_headers = {
-            "OpenAI-Beta": "assistants=v1",
+            "OpenAI-Beta": "assistants=v2",
             "X-Stainless-Stream-Helper": "threads.runs.create_and_stream",
             "X-Stainless-Custom-Event-Handler": "true" if event_handler else "false",
             **(extra_headers or {}),
@@ -2742,6 +2825,7 @@ class AsyncRuns(AsyncAPIResource):
                     "stream": True,
                     "tools": tools,
                     "truncation_strategy": truncation_strategy,
+                    "top_p": top_p,
                 },
                 run_create_params.RunCreateParams,
             ),
@@ -2887,7 +2971,7 @@ class AsyncRuns(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
         if not run_id:
             raise ValueError(f"Expected a non-empty value for `run_id` but received {run_id!r}")
-        extra_headers = {"OpenAI-Beta": "assistants=v1", **(extra_headers or {})}
+        extra_headers = {"OpenAI-Beta": "assistants=v2", **(extra_headers or {})}
         return await self._post(
             f"/threads/{thread_id}/runs/{run_id}/submit_tool_outputs",
             body=await async_maybe_transform(
@@ -3016,7 +3100,7 @@ class AsyncRuns(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `thread_id` but received {thread_id!r}")
 
         extra_headers = {
-            "OpenAI-Beta": "assistants=v1",
+            "OpenAI-Beta": "assistants=v2",
             "X-Stainless-Stream-Helper": "threads.runs.submit_tool_outputs_stream",
             "X-Stainless-Custom-Event-Handler": "true" if event_handler else "false",
             **(extra_headers or {}),
