@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import time
 import typing_extensions
 from typing import Union, Iterable, Optional, overload
 from functools import partial
@@ -86,6 +85,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -231,6 +232,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -375,6 +378,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -518,6 +523,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -785,6 +792,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -875,6 +884,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -929,6 +940,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -983,6 +996,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -1105,7 +1120,7 @@ class Runs(SyncAPIResource):
                 else:
                     poll_interval_ms = 1000
 
-            time.sleep(poll_interval_ms / 1000)
+            self._sleep(poll_interval_ms / 1000)
 
     @overload
     def stream(
@@ -1121,6 +1136,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -1174,6 +1191,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -1227,6 +1246,8 @@ class Runs(SyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -1618,6 +1639,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -1763,6 +1786,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -1907,6 +1932,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -2050,6 +2077,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -2317,6 +2346,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -2407,6 +2438,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -2461,6 +2494,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -2515,6 +2550,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -2639,7 +2676,7 @@ class AsyncRuns(AsyncAPIResource):
                 else:
                     poll_interval_ms = 1000
 
-            time.sleep(poll_interval_ms / 1000)
+            await self._sleep(poll_interval_ms / 1000)
 
     @overload
     def stream(
@@ -2655,6 +2692,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -2708,6 +2747,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
@@ -2761,6 +2802,8 @@ class AsyncRuns(AsyncAPIResource):
         model: Union[
             str,
             Literal[
+                "gpt-4o",
+                "gpt-4o-2024-05-13",
                 "gpt-4-turbo",
                 "gpt-4-turbo-2024-04-09",
                 "gpt-4-0125-preview",
