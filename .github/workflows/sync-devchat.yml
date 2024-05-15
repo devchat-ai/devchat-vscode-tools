@@ -53,7 +53,7 @@ jobs:
         DEVCHAT_BRANCH=$(git branch --show-current)
         pip install --no-binary :all: "pydantic==1.10.14"
         pip install charset-normalizer --no-binary :all:
-        pip install git+https://github.com/yangbobo2021/tiktoken.git
+        pip install git+https://github.com/devchat-ai/tiktoken.git
         pip install .
         echo ">>>>>>>>>> Finish installing."
         pip list
