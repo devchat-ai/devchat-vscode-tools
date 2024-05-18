@@ -66,7 +66,10 @@ class CoreBPE:
         self.special_regex = re.compile('|'.join(map(re.escape, special_tokens_encoder.keys())))
 
     def encode_ordinary(self, text: str) -> List[Rank]:
-        return [self.encoder[piece.encode("utf-8")] for piece in self.regex.findall(text)]
+        try:
+            return [self.encoder[piece.encode("utf-8")] for piece in self.regex.findall(text)]
+        except Exception:
+            return []
 
     def encode(self, text: str, allowed_special: set) -> List[Rank]:
         tokens = []
