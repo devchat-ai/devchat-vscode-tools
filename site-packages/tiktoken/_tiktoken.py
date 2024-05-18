@@ -67,7 +67,12 @@ class CoreBPE:
 
     def encode_ordinary(self, text: str) -> List[Rank]:
         try:
-            return [self.encoder[piece.encode("utf-8")] for piece in self.regex.findall(text)]
+            def encode_text(text):
+                try:
+                    return self.encoder[text.encode("utf-8")]
+                except Exception:
+                    return 0
+            return [encode_text(piece.encode("utf-8")) for piece in self.regex.findall(text)]
         except Exception:
             return []
 
