@@ -69,7 +69,7 @@ class CoreBPE:
         try:
             def encode_text(text):
                 try:
-                    return self.encoder[text.encode("utf-8")]
+                    return self.encoder[text]
                 except Exception:
                     return 0
             return [encode_text(piece.encode("utf-8")) for piece in self.regex.findall(text)]

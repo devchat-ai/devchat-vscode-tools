@@ -82,7 +82,7 @@ def cl100k_base():
     }
     return {
         "name": "cl100k_base",
-        "pat_str": r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\w]?+\w+|\d{1,3}| ?[^\s\w]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+""",
+        "pat_str": r"""'(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\r\n\w]?\w+|\d{1,3}| ?[^\s\w]+[\r\n]*|\s*[\r\n]+|\s+(?!\S)|\s+""",
         "mergeable_ranks": mergeable_ranks,
         "special_tokens": special_tokens,
     }
