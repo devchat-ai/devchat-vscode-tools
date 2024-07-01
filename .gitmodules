@@ -1,3 +1,3 @@
-[submodule "sonar_respec"]
-	path = sonar_respec
+[submodule "sonar-rspec"]
+	path = sonar-rspec
 	url = https://github.com/SonarSource/rspec.git
